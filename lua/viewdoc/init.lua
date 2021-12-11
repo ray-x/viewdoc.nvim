@@ -175,5 +175,5 @@ local view = function(path)
   end
 end
 
-view("git")
+-- view("git")
 return { view = view, setup = setup }
