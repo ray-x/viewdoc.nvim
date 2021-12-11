@@ -1,7 +1,45 @@
 # Viewdoc
 
-Flexible viewer for any documentation source (help/man/markdow/etc.) for any file type inside Vim or pre-configured paths.
+Flexible viewer for any documentation source (help/man/markdow/etc.) inside Vim runtime path (vim plugins) or pre-configured paths.
 You can preview the documents and view the selected document with glow in floating window
+
+## Install
+
+```vim
+Plug 'ray-x/guihua.lua' --float term, gui support
+
+Plug 'ray-x/go.nvim'
+
+```
+
+## Dependencies
+
+- fd
+- glow
+
+## setup
+
+```lua
+require 'viewdoc'.setup({
+  paths = {'myproject_path1', 'myproject_path2'}
+})
+
+
+```
+
+## usage
+
+- Check gitsigns document
+
+```
+:Viewdoc gitsigns
+```
+
+- Check sarama (a go kafka) document
+
+```lua
+:Viewdoc sarama
+```
 
 ## Screenshots
 

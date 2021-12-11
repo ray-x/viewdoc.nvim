@@ -1,5 +1,13 @@
 local utils = require("viewdoc.utils")
 
+_VIEWDOC_CFG = {}
+
+local function setup(cfg)
+  cfg = cfg or {}
+  _VIEWDOC_CFG = vim.tbl_extend("force", _VIEWDOC_CFG, cfg)
+  vim.cmd([[command! -nargs=* Viewdoc lua require"viewdoc".view(<f-args>)]])
+end
+
 local guihua_term = utils.load_plugin("guihua.lua", "guihua.floating")
 if not guihua_term then
   utils.warn("guihua not installed, please install ray-x/guihua.lua for GUI functions")
@@ -18,7 +26,7 @@ end
 --   end
 -- end
 
-function preview_uri(opts) -- uri, width, line, col, offset_x, offset_y
+local function preview_uri(opts) -- uri, width, line, col, offset_x, offset_y
   -- local handle = vim.loop.new_async(vim.schedule_wrap(function()
   local line_beg = 1
   local loc = { uri = opts.uri, range = { start = { line = line_beg } } }
@@ -48,8 +56,8 @@ local view = function(path)
     pwd = { vim.fn.expand("%:p:h") }
   end
 
-  if _VIEWDOC_CFG.path then
-    pwd = vim.list_extend(pwd, _VIEWDOC_CFG.path)
+  if _VIEWDOC_CFG.paths then
+    pwd = vim.list_extend(pwd, _VIEWDOC_CFG.paths)
   end
   local readmes = {}
   local width = 90
@@ -140,5 +148,5 @@ local view = function(path)
   end
 end
 
-view("git")
-return { view = view }
+-- view("git")
+return { view = view, setup = setup }
