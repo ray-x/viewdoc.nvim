@@ -41,6 +41,12 @@ require 'viewdoc'.setup({
 :Viewdoc sarama
 ```
 
+- Check document in current project
+
+```lua
+:Viewdoc
+```
+
 ## Screenshots
 
 ![select](https://user-images.githubusercontent.com/1681295/145674599-44f4f701-9090-4ba7-a6c0-558f16d28b6e.jpg)
