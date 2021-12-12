@@ -2,29 +2,24 @@ local utils = require("viewdoc.utils")
 local log = utils.log
 _VIEWDOC_CFG = { debug = true }
 
-local function setup(cfg)
-  cfg = cfg or {}
-  _VIEWDOC_CFG = vim.tbl_extend("force", _VIEWDOC_CFG, cfg)
-  vim.cmd([[command! -nargs=* Viewdoc lua require"viewdoc".view(<f-args>)]])
-end
-
 local guihua_term = utils.load_plugin("guihua.lua", "guihua.floating")
 if not guihua_term then
   utils.warn("guihua not installed, please install ray-x/guihua.lua for GUI functions")
 end
+local function setup(cfg)
+  cfg = cfg or {}
+  _VIEWDOC_CFG = vim.tbl_extend("force", _VIEWDOC_CFG, cfg)
+  vim.cmd([[command! -nargs=* Viewdoc lua require"viewdoc".view(<f-args>)]])
+  local installed = require('guihua.helper').is_installed
+  if not installed('fd') then
+    print('please install fd, e.g. `brew install fd`')
+  end
 
--- local function preview_uri(opts) -- uri, width, line, col, offset_x, offset_y
---   -- local handle = vim.loop.new_async(vim.schedule_wrap(function()
---   local line_beg = 1
---   local loc = { uri = opts.uri, range = { start = { line = line_beg } } }
---
---   -- TODO: preview height
---   loc.range["end"] = { line = opts.lnum + opts.preview_height or 30 }
---   opts.location = loc
---
---   utils.log("uri", opts.uri, opts.lnum, opts.location.range.start.line, opts.location.range["end"].line)
---   return require("guihua.gui")._preview_location(opts)
--- end
+  if not installed('glow') then
+    print('please install glow, e.g. `brew install glow`')
+  end
+end
+
 
 local term = require("guihua.floating").gui_term
 
@@ -130,46 +125,6 @@ local view = function(path)
         gui.preview_uri(opts)
       end,
     })
-    -- local listview = gui.new_list_view({
-    --   items = display_items,
-    --   loc = "top_center",
-    --   -- height = #display_items + 2,
-    --   -- width_ratio = 0.8,
-    --   -- preview_height = 30,
-    --   border = "single",
-    --   rawdata = true,
-    --   ft = "markdown",
-    --   data = readmes,
-    --   -- rect = { height = 5, width = width, pos_x = 0, pos_y = 0 },
-    --   on_confirm = function(item)
-    --     for i = 1, #display_items do
-    --       if display_items[i] == item then
-    --         local readme_chosen = readmes[i]
-    --         utils.log(readme_chosen)
-    --         return term({ cmd = "glow " .. readme_chosen, term_name = "readme_floaterm", autoclose = false })
-    --       end
-    --     end
-    --   end,
-    --   on_move = function(item)
-    --     local readme_chosen
-    --     for i = 1, #display_items do
-    --       if display_items[i] == item then
-    --         readme_chosen = readmes[i]
-    --         utils.log(readme_chosen)
-    --       end
-    --     end
-    --     local opts = {
-    --       uri = "file:///" .. readme_chosen,
-    --       lnum = 1,
-    --       preview_height = 60,
-    --       -- width_ratio = 0.5,
-    --       offset_x = 0,
-    --       offset_y = r + #display_items + 1,
-    --       range = { start = {} },
-    --     }
-    --     preview_uri(opts)
-    --   end,
-    -- })
   else
     term({ cmd = "glow ", autoclose = true })
   end
