@@ -1,12 +1,12 @@
 # Viewdoc
 
 Flexible viewer for any documentation source (help/man/markdow/etc.) inside Vim runtime path (vim plugins) or pre-configured paths.
-You can preview the documents and view the selected document with glow in floating window
+You can preview the documents with nvim and view the selected document with glow in floating window
 
 ## Install
 
 ```vim
-Plug 'ray-x/guihua.lua' --float term, gui support
+Plug 'ray-x/guihua.lua' "float term, gui support
 
 Plug 'ray-x/go.nvim'
 
@@ -14,8 +14,8 @@ Plug 'ray-x/go.nvim'
 
 ## Dependencies
 
-- fd
-- glow
+- [fd](https://github.com/sharkdp/fd)
+- [glow](https://github.com/charmbracelet/glow)
 
 ## setup
 
