@@ -16,6 +16,7 @@ Plug 'ray-x/go.nvim'
 
 - [fd](https://github.com/sharkdp/fd)
 - [glow](https://github.com/charmbracelet/glow)
+- [mdcat](https://codeberg.org/flausch/mdcat/) preview markdown with embedded image support
 
 ## setup
 

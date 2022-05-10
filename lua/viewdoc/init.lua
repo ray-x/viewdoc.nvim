@@ -25,14 +25,30 @@ local term = require("guihua.floating").gui_term
 local runtimepath = vim.split(vim.o.runtimepath, ",")
 local view = function(path)
   local pwd = {}
-  if path ~= nil then
-    for _, p in pairs(runtimepath) do
-      if p:find(path) then
-        table.insert(pwd, p)
+  local filemode = false
+  if path == nil then
+    if vim.o.ft == "md" then
+      filemode = true
+      path = vim.fn.expand("%:p")
+    else
+      for _, p in pairs(runtimepath) do
+        if p:find("md") or p:find("txt") or p:find("org") then
+          table.insert(pwd, p)
+        end
       end
     end
   else
-    pwd = { vim.fn.getcwd() }
+    if vim.fn.isdirectory(path) == 1 then
+      table.insert(pwd, path)
+    elseif vim.fn.filereadable(path) == 1 then
+      filemode = true
+    else
+      for _, p in pairs(runtimepath) do
+        if p:find(path) then
+          table.insert(pwd, p)
+        end
+      end
+    end
   end
 
   if _VIEWDOC_CFG.paths then
@@ -41,7 +57,11 @@ local view = function(path)
   local readmes = {}
   local width = 90
 
-  utils.log(pwd)
+  utils.log("args", pwd, path, filemode)
+  if filemode then
+    term({ cmd = _VIEWDOC_CFG.md_viewer .. " " .. path, autoclose = false })
+    return
+  end
 
   -- if true then
   --   return
@@ -81,6 +101,9 @@ local view = function(path)
   local top_center = require("guihua.location").top_center
   local r, _ = top_center(#readmes, width)
 
+  if #readmes == 1 then
+    term({ cmd = _VIEWDOC_CFG.md_viewer .. " " .. readmes[1], autoclose = true })
+  end
   if #readmes > 1 then
     local gui = require("guihua.gui")
 
@@ -128,8 +151,6 @@ local view = function(path)
         gui.preview_uri(opts)
       end,
     })
-  else
-    term({ cmd = _VIEWDOC_CFG.md_viewer .. " ", autoclose = true })
   end
 end
 
