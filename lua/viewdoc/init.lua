@@ -1,6 +1,6 @@
 local utils = require("viewdoc.utils")
 local log = utils.log
-_VIEWDOC_CFG = { debug = true }
+_VIEWDOC_CFG = { debug = true, md_viewer = "glow" }
 
 local guihua_term = utils.load_plugin("guihua.lua", "guihua.floating")
 if not guihua_term then
@@ -10,16 +10,15 @@ local function setup(cfg)
   cfg = cfg or {}
   _VIEWDOC_CFG = vim.tbl_extend("force", _VIEWDOC_CFG, cfg)
   vim.cmd([[command! -nargs=* Viewdoc lua require"viewdoc".view(<f-args>)]])
-  local installed = require('guihua.helper').is_installed
-  if not installed('fd') then
-    print('please install fd, e.g. `brew install fd`')
+  local installed = require("guihua.helper").is_installed
+  if not installed("fd") then
+    print("please install fd, e.g. `brew install fd`")
   end
 
-  if not installed('glow') then
-    print('please install glow, e.g. `brew install glow`')
+  if not installed("glow") and not installed("mdcat") then
+    print("please install glow or mdcat, e.g. `brew install glow`")
   end
 end
-
 
 local term = require("guihua.floating").gui_term
 
@@ -101,7 +100,11 @@ local view = function(path)
           if display_items[i] == item then
             local readme_chosen = readmes[i]
             utils.log(readme_chosen)
-            return term({ cmd = "glow " .. readme_chosen, term_name = "readme_floaterm", autoclose = false })
+            return term({
+              cmd = _VIEWDOC_CFG.md_viewer .. " " .. readme_chosen,
+              term_name = "readme_floaterm",
+              autoclose = false,
+            })
           end
         end
       end,
@@ -126,7 +129,7 @@ local view = function(path)
       end,
     })
   else
-    term({ cmd = "glow ", autoclose = true })
+    term({ cmd = _VIEWDOC_CFG.md_viewer .. " ", autoclose = true })
   end
 end
 

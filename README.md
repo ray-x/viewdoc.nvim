@@ -1,7 +1,7 @@
 # Viewdoc
 
 Flexible viewer for any documentation source (help/man/markdow/etc.) inside Vim runtime path (vim plugins) or pre-configured paths.
-You can preview the documents with nvim and view the selected document with glow in floating window
+You can preview the documents with nvim and view the selected document with glow or mdcat(with embedded image support) in floating window
 
 ## Install
 
@@ -22,6 +22,7 @@ Plug 'ray-x/go.nvim'
 ```lua
 require 'viewdoc'.setup({
   paths = {'myproject_path1', 'myproject_path2'}
+    md_viewer = 'glow', -- or 'mdcat'
 })
 
 
