@@ -1,6 +1,6 @@
 # Viewdoc
 
-Flexible viewer for any documentation source (help/man/markdow/etc.) inside Vim runtime path (vim plugins) or pre-configured paths.
+Flexible viewer for any documentation source (help/man/markdow/etc.). Search and filter inside Vim runtime path (vim plugins) or pre-configured paths.
 You can preview the documents with nvim and view the selected document with glow or mdcat(with embedded image support) in floating window
 
 ## Install
